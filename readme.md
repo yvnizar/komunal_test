@@ -30,6 +30,6 @@ Panduan penggunaan file Result Test from Komunal.
 - Inputan dapat diganti pada ```var arr```
 
 ## Test No. 6
-- Test No. 1 ada pada file komunal_test_6.js
+- Test No. 6 ada pada file komunal_test_6.js
 - Dikembangkan menggunakan Javascript
 - Jalankan file tersebut menggunakan node.js
