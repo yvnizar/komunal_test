@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <style>
+            @import url(https://fonts.googleapis.com/css?family=Lato:100,300,400);
+
+            body {
+                font-family: "Lato", sans-serif;
+                background: #e2dedb;
+                color: #b3aca7;
+            }
+
+            header {
+                position: relative;
+                margin: 100px 0 25px 0;
+                font-size: 2.3em;
+                text-align: center;
+                letter-spacing: 7px;
+            }
+
+            #form {
+                position: relative;
+                width: 500px;
+                margin: 50px auto 100px auto;
+            }
+
+            input {
+                font-family: "Lato", sans-serif;
+                font-size: 1em;
+                width: 470px;
+                height: 50px;
+                padding: 0px 15px 0px 15px;
+
+                background: transparent;
+                outline: none;
+                color: #726659;
+
+                border: solid 1px #b3aca7;
+                border-bottom: none;
+
+                transition: all 0.3s ease-in-out;
+                -webkit-transition: all 0.3s ease-in-out;
+                -moz-transition: all 0.3s ease-in-out;
+                -ms-transition: all 0.3s ease-in-out;
+            }
+
+            #submit {
+                width: 502px;
+
+                padding: 0;
+                margin: -5px 0px 0px 0px;
+
+                font-family: "Lato", sans-serif;
+                font-size: 0.875em;
+                color: #b3aca7;
+
+                outline: none;
+                cursor: pointer;
+
+                border: solid 1px #b3aca7;
+            }
+
+            #submit:hover {
+                background: #b3aca7;
+                color: #e2dedb;
+            }
+        </style>
+    </head>
+    <body>
+        <header>MATH PROBLEM SOLVER</header>
+        <p style="text-align: center">Input 3 Number | Separate With Space</p>
+
+        <div ng-app="mathApp" ng-controller="mainCtrl">
+            <form ng-submit="submit()" id="form" class="topBefore">
+                <input
+                    type="text"
+                    ng-model="input"
+                    placeholder="INPUT"
+                    required
+                />
+                <input id="submit" type="submit" value="SOLVE THIS PROBLEM!" />
+                <!-- <input id="output" type="text" disabled /> -->
+            </form>
+
+            <!-- <header ng-bind="input"></header> -->
+            <header>{{ output }}</header>
+        </div>
+
+        <script>
+            var app = angular.module("mathApp", []);
+            var operator = [
+                { list: "+", result: (a, b) => a + b },
+                { list: "-", result: (a, b) => a - b },
+                { list: "*", result: (a, b) => a * b },
+                { list: "/", result: (a, b) => a / b },
+                { list: "^", result: (a, b) => a ** b },
+                { list: "%", result: (a, b) => a % b },
+            ];
+
+            app.controller("mainCtrl", function ($scope) {
+                $scope.submit = function () {
+                    let checkSolution = check($scope.input);
+
+                    $scope.output = checkSolution;
+                };
+            });
+
+            function check(str) {
+                var inputSplit = str.trim().split(/\s+/).map(Number);
+
+                if (inputSplit.length != 3) {
+                    return "MAXIMUM INPUT 3";
+                } else if (inputSplit.includes(NaN)) {
+                    return `INPUT NUMBER ONLY`;
+                } else {
+                    for (i = 0; i < operator.length; i++) {
+                        if (
+                            operator[i].result(inputSplit[0], inputSplit[1]) ==
+                            inputSplit[2]
+                        ) {
+                            return `SOLUTION : ${inputSplit[0]}${operator[i].list}${inputSplit[1]}=${inputSplit[2]}`;
+                        }
+
+                        if (
+                            inputSplit[0] ==
+                            operator[i].result(inputSplit[1], inputSplit[2])
+                        ) {
+                            return `SOLUTION : ${inputSplit[0]}=${inputSplit[1]}${operator[i].list}${inputSplit[2]}`;
+                        }
+                    }
+
+                    return "SOLUTION NOT FOUND";
+                }
+            }
+        </script>
+    </body>
+</html>
